@@ -1,1 +1,0 @@
-prompt("aala re aala")
