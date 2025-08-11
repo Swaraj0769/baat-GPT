@@ -1,5 +1,5 @@
 async function getRegisterController(req, res) {
-    res.render('register')
+    res.render("register")
 } 
 
 
