@@ -39,8 +39,13 @@ async function postRegisterController(req, res) {
     })
 } 
 
+async function getLoginController(req, res) {
+    res.render('login')
+}
+
 
 module.exports = {
     getRegisterController,
-    postRegisterController
+    postRegisterController,
+    getLoginController
 }
