@@ -1,5 +1,6 @@
 const userModel = require('../models/user.model')
 const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
 
 async function getRegisterController(req, res) {
     res.render("register")
@@ -26,8 +27,12 @@ async function postRegisterController(req, res) {
     const user = await userModel.create({
         username: username,
         email: email,
-        password: password
+        password: hashPassword
     })
+
+    const token = jwt.sign({id: user._id}, process.env.JWT_SECRET)
+
+    res.cookie('token', token)
 
     return res.status(201).json({
         message: "User register successfully", user
