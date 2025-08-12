@@ -43,9 +43,38 @@ async function getLoginController(req, res) {
     res.render('login')
 }
 
+async function postLoginController(req, res) {
+    const { email, username, password} = req.body
+
+    const user = await userModel.findOne({
+        $or:[
+            {email: email},
+            {username: username}
+        ]
+    })
+
+    if(!user){
+        return res.redirect('/login?error=User not found')
+    }
+
+    const isPasswordVaild = await bcrypt.compare(password, user.password)
+    if(!isPasswordVaild){
+        return res.redirect('/login?error= Invalid password')
+    }
+
+    const token =jwt.sign({id: user._id}, process.env.JWT_SECRET)
+
+    res.cookie('token', token)
+    return res.status(200).json({
+        message: "User logged in Successfully",
+        token
+    })
+}
+
 
 module.exports = {
     getRegisterController,
     postRegisterController,
-    getLoginController
+    getLoginController,
+    postLoginController
 }
