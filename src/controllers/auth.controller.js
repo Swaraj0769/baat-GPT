@@ -44,12 +44,15 @@ async function getLoginController(req, res) {
 }
 
 async function postLoginController(req, res) {
-    const { email, username, password} = req.body
+    const { identifier, username, password} = req.body
+
+    console.log(identifier, username, password);
+    
 
     const user = await userModel.findOne({
         $or:[
-            {email: email},
-            {username: username}
+            {email: identifier},
+            {username: identifier}
         ]
     })
 
@@ -67,7 +70,7 @@ async function postLoginController(req, res) {
     res.cookie('token', token)
     return res.status(200).json({
         message: "User logged in Successfully",
-        token
+        user: user
     })
 }
 
