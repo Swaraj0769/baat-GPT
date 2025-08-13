@@ -72,10 +72,16 @@ async function postLoginController(req, res) {
     })
 }
 
+async function userLogout(req, res) {
+    res.clearCookie('token')
+    
+    return res.redirect('/auth/login')
+}
 
 module.exports = {
     getRegisterController,
     postRegisterController,
     getLoginController,
-    postLoginController
+    postLoginController,
+    userLogout
 }
