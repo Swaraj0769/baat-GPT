@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BaatGPT - Chat Interface</title>
+    <link rel="stylesheet" href="/styles/theme.css">
+    <style>
+        /* Mobile-first styles */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: var(--font-family);
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
+        .app-container {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Overlay styles */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        .sidebar-overlay.show {
+            display: block;
+        }
+
+        /* Sidebar styles */
+        .sidebar {
+            background-color: var(--input-background);
+            width: 260px;
+            padding: var(--spacing-md);
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            transform: translateX(-100%);
+            transition: transform var(--transition-speed);
+            z-index: 1000;
+        }
+
+        .sidebar.show {
+            transform: translateX(0);
+        }
+
+        .sidebar-close {
+            display: none;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 24px;
+            cursor: pointer;
+            padding: var(--spacing-xs);
+        }
+
+        @media (max-width: 767px) {
+            .sidebar-close {
+                display: block;
+            }
+        }
+
+        .new-chat-button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: var(--font-size-md);
+            transition: background-color var(--transition-speed);
+        }
+
+        .new-chat-button:hover {
+            background-color: var(--primary-hover);
+        }
+
+        /* Main chat area */
+        .main-content {
+            flex: 1;
+            margin-left: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .chat-header {
+            padding: var(--spacing-md);
+            border-bottom: 1px solid var(--input-border);
+            display: flex;
+            align-items: center;
+        }
+
+        .sidebar-toggle {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: var(--font-size-lg);
+            cursor: pointer;
+            padding: var(--spacing-xs);
+        }
+
+        .chat-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: var(--spacing-md);
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+        }
+
+        .message {
+            display: flex;
+            gap: var(--spacing-md);
+            padding: var(--spacing-md);
+            border-radius: var(--border-radius);
+        }
+
+        .user-message {
+            background-color: var(--input-background);
+            margin-left: auto;
+            max-width: 80%;
+        }
+
+        .bot-message {
+            background-color: var(--primary-color);
+            margin-right: auto;
+            max-width: 80%;
+        }
+
+        .message-input-container {
+            padding: var(--spacing-md);
+            border-top: 1px solid var(--input-border);
+        }
+
+        .message-form {
+            display: flex;
+            gap: var(--spacing-md);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .message-input {
+            flex: 1;
+            padding: var(--spacing-md);
+            border: 1px solid var(--input-border);
+            border-radius: var(--border-radius);
+            background-color: var(--input-background);
+            color: var(--text-color);
+            font-size: var(--font-size-md);
+            resize: none;
+            min-height: 40px;
+            max-height: 200px;
+        }
+
+        .send-button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: var(--spacing-md);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: background-color var(--transition-speed);
+        }
+
+        .send-button:hover {
+            background-color: var(--primary-hover);
+        }
+
+        /* Desktop styles */
+        @media (min-width: 768px) {
+            .sidebar {
+                transform: none;
+                position: static;
+            }
+
+            .main-content {
+                margin-left: 260px;
+            }
+
+            .sidebar-toggle {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Overlay -->
+        <div class="sidebar-overlay"></div>
+        
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <button class="sidebar-close">×</button>
+            <button class="new-chat-button">+ New Chat</button>
+            <div class="chat-history">
+                <!-- Chat history items will be added here -->
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="chat-header">
+                <button class="sidebar-toggle">☰</button>
+                <h1 style="margin: 0 auto;">BaatGPT</h1>
+            </div>
+
+            <div class="chat-container">
+                <!-- Messages will be added here -->
+            </div>
+
+            <div class="message-input-container">
+                <form class="message-form" onsubmit="return false;">
+                    <textarea 
+                        class="message-input" 
+                        placeholder="Type a message..."
+                        rows="1"
+                        autofocus></textarea>
+                    <button class="send-button">Send</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="/scripts/theme-toggle.js"></script>
+    <script src="/scripts/chat.js"></script>
+</body>
+</html>

@@ -1,14 +1,10 @@
 const express = require('express')
 
-const route = express.Router()
+const router = express.Router()
 
-route.get('/', (req, res)=>{
-    console.log("hello world");
-    
-    return res.status(201).json({
-        message: "ho gaya log In"
-    })
+router.get('/', (req, res)=>{
+    res.render('home')
 } )
 
 
-module.exports = route
+module.exports = router

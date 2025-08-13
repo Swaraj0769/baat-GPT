@@ -46,9 +46,7 @@ async function getLoginController(req, res) {
 async function postLoginController(req, res) {
     const { identifier, username, password} = req.body
 
-    console.log(identifier, username, password);
-    
-
+    // console.log(identifier, username, password);
     const user = await userModel.findOne({
         $or:[
             {email: identifier},
