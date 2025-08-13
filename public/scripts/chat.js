@@ -44,9 +44,9 @@ function addChatToSidebar(chatId, title) {
     const chatElement = document.createElement('div');
     chatElement.classList.add('chat-history-item');
     chatElement.innerHTML = `
-        <button class="chat-button" data-chat-id="${chatId}">
+        <div class="chat-button" data-chat-id="${chatId}">
             ${title || 'New Chat'}
-        </button>
+        </div>
         <button class="delete-chat" data-chat-id="${chatId}">×</button>
     `;
     chatElement.style.display = 'flex';
@@ -55,7 +55,7 @@ function addChatToSidebar(chatId, title) {
     chatElement.style.padding = 'var(--spacing-sm)';
     chatElement.style.margin = 'var(--spacing-xs) 0';
     chatElement.style.borderRadius = 'var(--border-radius)';
-    chatElement.style.backgroundColor = 'var(--input-background)';
+    chatElement.style.backgroundColor = 'black';
     chatElement.style.cursor = 'pointer';
 
     chatHistory.insertBefore(chatElement, chatHistory.firstChild);
