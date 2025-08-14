@@ -17,11 +17,11 @@ const setTheme = (theme) => {
 setTheme(getPreferredTheme());
 
 // Handle theme toggle button click
-document.getElementById('theme-toggle').addEventListener('click', () => {
-    const currentTheme = document.documentElement.getAttribute('data-theme');
-    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-    setTheme(newTheme);
-});
+// document.getElementById('theme-toggle').addEventListener('click', () => {
+//     const currentTheme = document.documentElement.getAttribute('data-theme');
+//     const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+//     setTheme(newTheme);
+// });
 
 // Listen for system theme changes
 window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
