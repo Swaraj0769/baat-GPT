@@ -1,3 +1,5 @@
+// const { socket } = require("socket.io");
+
 // Chat functionality
 const chatContainer = document.querySelector('.chat-container');
 const messageInput = document.querySelector('.message-input');
@@ -149,6 +151,9 @@ async function sendMessage() {
     messageInput.value = '';
 
     try {
+
+        socket.emit('ai-message', message);
+
         // Replace with your actual API endpoint
         const response = await fetch('/api/chat', {
             method: 'POST',
