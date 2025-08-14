@@ -1,4 +1,4 @@
-// const { socket } = require("socket.io");
+const { socket } = require("socket.io");
 
 // Chat functionality
 const chatContainer = document.querySelector('.chat-container');
@@ -101,9 +101,21 @@ function addMessage(message, isUser = true, save = true) {
         }
         
         const chat = chats.get(currentChatId);
-        chat.messages.push({ content: message, isUser });
+        chat.messages.push({
+            role: isUser ? 'user' : 'assistant',
+            content: message
+        });
         saveChats();
     }
+
+    socket.on('ai-message-response', (message)=>{
+        const messageItem = createMessage({
+            role: "assistant",
+            content: message
+        })
+
+        list.appendChild(messageItem)
+    })
 }
 
 // Event listeners
@@ -151,22 +163,32 @@ async function sendMessage() {
     messageInput.value = '';
 
     try {
+        // Emit message to socket with proper role
+        socket.emit('ai-message', {
+            role: 'user',
+            content: message
+        });
 
-        socket.emit('ai-message', message);
-
-        // Replace with your actual API endpoint
+        // Send to API with proper structure
         const response = await fetch('/api/chat', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ message })
+            body: JSON.stringify({
+                role: 'user',
+                content: message
+            })
         });
 
         const data = await response.json();
         
-        // Add bot response to chat
-        addMessage(data.response, false);
+        // Add assistant response to chat
+        if (data.response) {
+            addMessage(data.response, false);
+        } else {
+            throw new Error('Invalid response from server');
+        }
     } catch (error) {
         console.error('Error:', error);
         addMessage('Sorry, something went wrong. Please try again.', false);

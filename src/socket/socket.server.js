@@ -1,4 +1,5 @@
 const {Server} = require('socket.io')
+const aiService = require('../services/ai.service')
 
 function setupSocketServer(httpServer) {
     const io = new Server(httpServer, {})
@@ -6,8 +7,10 @@ function setupSocketServer(httpServer) {
     io.on('connection', (socket) =>{
         console.log("A user connected");
 
-        socket.on('ai-message', (message)=>{
-            console.log(message)
+        socket.on('ai-message',async (message)=>{
+            const result = await aiService.generateContent(message)
+            
+            socket.emit("ai-message-response", result)
         })
         
         socket.on('disconnected', ()=>{
