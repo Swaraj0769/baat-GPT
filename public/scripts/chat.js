@@ -4,7 +4,7 @@ const messageInput = document.querySelector('.message-input');
 const sendButton = document.querySelector('.send-button');
 const newChatButton = document.querySelector('.new-chat-button');
 const chatHistory = document.querySelector('.chat-history');
-import  marked from "marked";
+// import  marked from "marked";
 
 marked.setOptions({
   renderer: new marked.Renderer(),
@@ -91,11 +91,18 @@ function loadChat(chatId) {
 function addMessage(message, isUser = true, save = true) {
     const messageElement = document.createElement('div');
     messageElement.classList.add('message', isUser ? 'user-message' : 'bot-message');
-    
+
     const contentElement = document.createElement('div');
     contentElement.classList.add('message-content');
-    contentElement.textContent = message;
-    
+
+    if (!isUser) {
+        // Render Markdown as HTML for bot response
+        contentElement.innerHTML = marked.parse(message);
+    } else {
+        // Render plain text for user input
+        contentElement.textContent = message;
+    }
+
     messageElement.appendChild(contentElement);
     chatContainer.appendChild(messageElement);
     chatContainer.scrollTop = chatContainer.scrollHeight;
@@ -110,7 +117,7 @@ function addMessage(message, isUser = true, save = true) {
             });
             addChatToSidebar(currentChatId, message.slice(0, 30) + '...');
         }
-        
+
         const chat = chats.get(currentChatId);
         chat.messages.push({
             role: isUser ? 'user' : 'assistant',
@@ -119,6 +126,7 @@ function addMessage(message, isUser = true, save = true) {
         saveChats();
     }
 }
+
 
 socket.on('ai-message-response', (message) => {
     addMessage(marked(message), false);
