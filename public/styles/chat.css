@@ -141,10 +141,10 @@ body {
 }
 
 .bot-message .message-content {
-    background-color: #1e1e1e;
+    background-color: #36789e;
     color: #f0f0f0;
     padding: 16px;
-    margin-right: 3rem;
+    margin-right: 15rem;
     border-radius: 8px;
     line-height: 1.6;
     font-size: 1rem;

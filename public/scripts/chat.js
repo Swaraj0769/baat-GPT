@@ -6,16 +6,16 @@ const newChatButton = document.querySelector('.new-chat-button');
 const chatHistory = document.querySelector('.chat-history');
 // import  marked from "marked";
 
-marked.setOptions({
-  renderer: new marked.Renderer(),
-  gfm: true,
-  tables: true,
-  breaks: false,
-  pedantic: false,
-  sanitize: false,
-  smartLists: true,
-  smartypants: false
-});
+// marked.setOptions({
+//   renderer: new marked.Renderer(),
+//   gfm: true,
+//   tables: true,
+//   breaks: false,
+//   pedantic: false,
+//   sanitize: false,
+//   smartLists: true,
+//   smartypants: false
+// });
 
 // Store current chat ID and all chats
 let currentChatId = Date.now();
@@ -129,7 +129,7 @@ function addMessage(message, isUser = true, save = true) {
 
 
 socket.on('ai-message-response', (message) => {
-    addMessage(marked(message), false);
+    addMessage(message, false);
 });
 
 // Event listeners
